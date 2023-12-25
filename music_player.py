@@ -74,7 +74,8 @@ class music_cog(commands.Cog):
 
     @commands.command(name="play", aliases=["p","playing"], help="Plays a selected song from youtube")
     async def play(self, ctx, *args):
-        channel=ctx.message.channel
+        message=ctx.message.channel
+        channel = discord.utils.get(ctx.guild.channels, name="╠🎶music🎶")
         query = " ".join(args)
         try:
             voice_channel = ctx.author.voice.channel
@@ -84,11 +85,11 @@ class music_cog(commands.Cog):
         if self.is_paused:
             self.vc.resume()
         else:
-            if(channel=="╠🎶music🎶"):
-
+            if(channel==message):
                 song = self.search_yt(query)
+                
                 if type(song) == type(True):
-                    await ctx.send("```Could not download the song. Incorrect format try another keyword. This could be due to playlist or a livestream format.```")
+                    await ctx.send("Invalid Input --> Gib was anderes ein Oglum")
                 else:
                     if self.is_playing:
                         await ctx.send(f"**#{len(self.music_queue)+2} -'{song['title']}'** added to the queue")  
@@ -99,9 +100,9 @@ class music_cog(commands.Cog):
                         await self.play_music(ctx)
 
             else:
-                await ctx.send("You are in the wrong hhannel cunt")
+                await ctx.send("You are in the wrong Channel cunt")
     
-    @commands.command(name="pause", aliases=["resume","p","r"])
+    @commands.command(name="pause", aliases=["resume","r"])
     async def pause(self, ctx, *args):
         if self.is_playing:
             self.is_playing = False

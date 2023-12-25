@@ -1,7 +1,7 @@
 import discord
 import asyncio
 from discord.ext import commands
-from classes import music_cog
+from music_player import music_cog
 
 token="MTE4ODIwMTAyNjA1MDg3MTMwNg.GXA9BO.CxJXOOzNWmiOuklI5E6YvlYePMz3weA0EhwzO4"
 
