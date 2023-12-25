@@ -57,10 +57,11 @@ class music_cog(commands.Cog):
 
                 #in case we fail to connect
                 if self.vc == None:
-                    await ctx.send("```Could not connect to the voice channel```")
+                    await ctx.send("You are in no Voice Channel cunt")
                     return
             else:
                 await self.vc.move_to(self.music_queue[0][1])
+            
             #remove the first element as you are currently playing it
             self.music_queue.pop(0)
             loop = asyncio.get_event_loop()
@@ -73,41 +74,41 @@ class music_cog(commands.Cog):
 
     @commands.command(name="play", aliases=["p","playing"], help="Plays a selected song from youtube")
     async def play(self, ctx, *args):
+        channel=ctx.message.channel
         query = " ".join(args)
         try:
             voice_channel = ctx.author.voice.channel
         except:
-            await ctx.send("```You need to connect to a voice channel first!```")
+            await ctx.send("Connect to a Voice Channel cunt")
             return
         if self.is_paused:
             self.vc.resume()
         else:
-            song = self.search_yt(query)
-            if type(song) == type(True):
-                await ctx.send("```Could not download the song. Incorrect format try another keyword. This could be due to playlist or a livestream format.```")
-            else:
-                if self.is_playing:
-                    await ctx.send(f"**#{len(self.music_queue)+2} -'{song['title']}'** added to the queue")  
-                else:
-                    await ctx.send(f"**'{song['title']}'** added to the queue")  
-                self.music_queue.append([song, voice_channel])
-                if self.is_playing == False:
-                    await self.play_music(ctx)
+            if(channel=="╠🎶music🎶"):
 
-    @commands.command(name="pause", help="Pauses the current song being played")
+                song = self.search_yt(query)
+                if type(song) == type(True):
+                    await ctx.send("```Could not download the song. Incorrect format try another keyword. This could be due to playlist or a livestream format.```")
+                else:
+                    if self.is_playing:
+                        await ctx.send(f"**#{len(self.music_queue)+2} -'{song['title']}'** added to the queue")  
+                    else:
+                        await ctx.send(f"**'{song['title']}'** added to the queue")  
+                    self.music_queue.append([song, voice_channel])
+                    if self.is_playing == False:
+                        await self.play_music(ctx)
+
+            else:
+                await ctx.send("You are in the wrong hhannel cunt")
+    
+    @commands.command(name="pause", aliases=["resume","p","r"])
     async def pause(self, ctx, *args):
         if self.is_playing:
             self.is_playing = False
             self.is_paused = True
             self.vc.pause()
+        
         elif self.is_paused:
-            self.is_paused = False
-            self.is_playing = True
-            self.vc.resume()
-
-    @commands.command(name = "resume", aliases=["r"], help="Resumes playing with the discord bot")
-    async def resume(self, ctx, *args):
-        if self.is_paused:
             self.is_paused = False
             self.is_playing = True
             self.vc.resume()
@@ -129,14 +130,14 @@ class music_cog(commands.Cog):
         if retval != "":
             await ctx.send(f"```queue:\n{retval}```")
         else:
-            await ctx.send("```No music in queue```")
+            await ctx.send("The fucking queue is empty")
 
     @commands.command(name="clear", aliases=["c", "bin"], help="Stops the music and clears the queue")
     async def clear(self, ctx):
         if self.vc != None and self.is_playing:
             self.vc.stop()
         self.music_queue = []
-        await ctx.send("```Music queue cleared```")
+        await ctx.send("The queue is clean now cunt")
 
     @commands.command(name="stop", aliases=["disconnect", "l", "d"], help="Kick the bot from VC")
     async def dc(self, ctx):
@@ -147,4 +148,4 @@ class music_cog(commands.Cog):
     @commands.command(name="remove", help="Removes last song added to queue")
     async def re(self, ctx):
         self.music_queue.pop()
-        await ctx.send("```last song removed```")
+        await ctx.send("Last song got removed cunt")
