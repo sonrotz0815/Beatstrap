@@ -21,6 +21,13 @@ async def play(ctx):
         await channel.connect()
     else:
         await ctx.send("Pls join a Voicechannel to use this command")
+        # await ctx.send(ctx.message.content) Testing for getting input besides -play 
+        # message=ctx.message.content 
+        # message=message.split(" ")
+        # await ctx.send(message[1])
+        
+    
+
 
 
 client.run(token)
