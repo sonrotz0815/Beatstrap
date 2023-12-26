@@ -5,7 +5,7 @@ from youtubesearchpython import VideosSearch
 from yt_dlp import YoutubeDL
 import asyncio
 
-class music_cog(commands.Cog):
+class Beatstrap(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
@@ -72,7 +72,7 @@ class music_cog(commands.Cog):
         else:
             self.is_playing = False
 
-    @commands.command(name="play", aliases=["p","playing"], help="Plays a selected song from youtube")
+    @commands.command(name="play", aliases=["p","playing"], help="plays song matching with url or Keyword")
     async def play(self, ctx, *args):
         message=ctx.message.channel
         channel = discord.utils.get(ctx.guild.channels, name="╠🎶music🎶")
@@ -102,7 +102,7 @@ class music_cog(commands.Cog):
             else:
                 await ctx.send("You are in the wrong Channel cunt")
     
-    @commands.command(name="pause", aliases=["resume","r"])
+    @commands.command(name="pause", aliases=["resume","r"], help="Pauses/Resumes current song")
     async def pause(self, ctx, *args):
         if self.is_playing:
             self.is_playing = False
@@ -114,7 +114,7 @@ class music_cog(commands.Cog):
             self.is_playing = True
             self.vc.resume()
 
-    @commands.command(name="skip", aliases=["s"], help="Skips the current song being played")
+    @commands.command(name="skip", aliases=["s"], help="skips currently playing song")
     async def skip(self, ctx):
         if self.vc != None and self.vc:
             self.vc.stop()
@@ -122,7 +122,7 @@ class music_cog(commands.Cog):
             await self.play_music(ctx)
 
 
-    @commands.command(name="queue", aliases=["q"], help="Displays the current songs in queue")
+    @commands.command(name="queue", aliases=["q"], help="shows the queue")
     async def queue(self, ctx):
         retval = ""
         for i in range(0, len(self.music_queue)):
@@ -133,9 +133,11 @@ class music_cog(commands.Cog):
         else:
             await ctx.send("The fucking queue is empty")
 
-    @commands.command(name="clear", aliases=["c", "bin"], help="Stops the music and clears the queue")
+    @commands.command(name="clear", aliases=["c", "bin"], help="emptys the queue")
     async def clear(self, ctx):
         if self.vc != None and self.is_playing:
             self.vc.stop()
         self.music_queue = []
         await ctx.send("The queue is clean now cunt")
+
+    
