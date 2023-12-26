@@ -139,14 +139,3 @@ class music_cog(commands.Cog):
             self.vc.stop()
         self.music_queue = []
         await ctx.send("The queue is clean now cunt")
-
-    @commands.command(name="stop", aliases=["disconnect", "l", "d"], help="Kick the bot from VC")
-    async def dc(self, ctx):
-        self.is_playing = False
-        self.is_paused = False
-        await self.vc.disconnect()
-    
-    @commands.command(name="remove", help="Removes last song added to queue")
-    async def re(self, ctx):
-        self.music_queue.pop()
-        await ctx.send("Last song got removed cunt")
