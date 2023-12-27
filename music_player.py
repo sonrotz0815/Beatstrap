@@ -16,7 +16,7 @@ class Beatstrap(commands.Cog):
         # 2d array containing [song, channel]
         self.music_queue = []
         self.YDL_OPTIONS = {'format': 'bestaudio/best'}
-        self.FFMPEG_OPTIONS = {'options': '-vn'}
+        self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
 
         self.vc = None
         self.ytdl = YoutubeDL(self.YDL_OPTIONS)
@@ -32,7 +32,6 @@ class Beatstrap(commands.Cog):
     async def play_next(self):
         if len(self.music_queue) > 0:
             self.is_playing = True
-
             #get the first url
             m_url = self.music_queue[0][0]['source']
 
@@ -47,6 +46,7 @@ class Beatstrap(commands.Cog):
 
     # infinite loop checking 
     async def play_music(self, ctx):
+        print("balls")
         if len(self.music_queue) > 0:
             self.is_playing = True
 
@@ -68,7 +68,7 @@ class Beatstrap(commands.Cog):
             data = await loop.run_in_executor(None, lambda: self.ytdl.extract_info(m_url, download=False))
             song = data['url']
             self.vc.play(discord.FFmpegPCMAudio(song, executable= "ffmpeg.exe", **self.FFMPEG_OPTIONS), after=lambda e: asyncio.run_coroutine_threadsafe(self.play_next(), self.bot.loop))
-
+            print("Yarak")
         else:
             self.is_playing = False
 
