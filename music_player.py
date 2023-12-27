@@ -12,6 +12,7 @@ class Beatstrap(commands.Cog):
         #all the music related stuff
         self.is_playing = False
         self.is_paused = False
+        self.loop=False
 
         # 2d array containing [song, channel]
         self.music_queue = []
@@ -30,13 +31,15 @@ class Beatstrap(commands.Cog):
         return{'source':search.result()["result"][0]["link"], 'title':search.result()["result"][0]["title"]}
 
     async def play_next(self):
-        if len(self.music_queue) > 0:
+        if len(self.music_queue) > 0 or self.loop:
             self.is_playing = True
             #get the first url
             m_url = self.music_queue[0][0]['source']
-
+            print(m_url)
             #remove the first element as you are currently playing it
-            self.music_queue.pop(0)
+            if(self.loop==False):
+                self.music_queue.pop(0)
+            
             loop = asyncio.get_event_loop()
             data = await loop.run_in_executor(None, lambda: self.ytdl.extract_info(m_url, download=False))
             song = data['url']
@@ -47,7 +50,7 @@ class Beatstrap(commands.Cog):
     # infinite loop checking 
     async def play_music(self, ctx):
         print("balls")
-        if len(self.music_queue) > 0:
+        if len(self.music_queue) > 0 or self.loop:
             self.is_playing = True
 
             m_url = self.music_queue[0][0]['source']
@@ -63,7 +66,10 @@ class Beatstrap(commands.Cog):
                 await self.vc.move_to(self.music_queue[0][1])
             
             #remove the first element as you are currently playing it
-            self.music_queue.pop(0)
+            
+            if(self.loop==False):
+                self.music_queue.pop(0)
+            
             loop = asyncio.get_event_loop()
             data = await loop.run_in_executor(None, lambda: self.ytdl.extract_info(m_url, download=False))
             song = data['url']
@@ -96,6 +102,7 @@ class Beatstrap(commands.Cog):
                     else:
                         await ctx.send(f"**'{song['title']}'** added to the queue")  
                     self.music_queue.append([song, voice_channel])
+                    
                     if self.is_playing == False:
                         await self.play_music(ctx)
 
@@ -140,4 +147,12 @@ class Beatstrap(commands.Cog):
         self.music_queue = []
         await ctx.send("The queue is clean now cunt")
 
+    @commands.command(name="looped", aliases=["l","infinite"], help="Loops the currently playing song")
+    async def looped(self,ctx):
+        if(self.loop):
+            self.loop=False
+            await ctx.send("You are not in a fucking loop anymore")
+        else:
+            self.loop=True
+            await ctx.send("You are now in a fucking loop")
     
