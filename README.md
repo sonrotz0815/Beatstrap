@@ -1,5 +1,3 @@
-Leon du bist der einzige der das je lesen wird aber egal
-
 Beatstrap is a Music Bot for DC private use which gets files from youtube with the yt_dlp library and plays the music in DC with ffmpeg. 
 The Code is based on a Youtube Tutorial and a Github project of a Music Bot but with personal changes and additions. 
 
