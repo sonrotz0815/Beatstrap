@@ -3,7 +3,3 @@ The Code is based on a Youtube Tutorial and a Github project of a Music Bot but 
 
 Base functionalities which are: play, skip, pause, help, clear and queue are working
 
-TODO:
-Musik Quiz? 
-Spotify connection?
-
